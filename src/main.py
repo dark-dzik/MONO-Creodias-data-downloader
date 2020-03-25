@@ -81,7 +81,21 @@ def manage_results_download(results_to_download_tuple_list, download_access_toke
 
 ##
 # What happens here, line by line:
-#
+# *.tsv containing eruptions data is loaded and stored in list of 5-elem tuples
+# for each eruption
+# select tuple elements and construct eruption name
+# select tuple elements and costruct search query params
+# merge fixed params with variable params
+# set collection value in search query -> Sentinel5P
+# build and execute search GET request
+# parse received response containing search results to json string
+# select download links along identifying data from search results
+# build and execute POST request for access token (downloading permitted for logged in only)
+# select token from response
+# store search query response as *.json
+# for each search results
+# store its describing *.json
+# download and store its data package
 def main():
     eruptions_list = load_tsv()
     if len(eruptions_list) > 0:
