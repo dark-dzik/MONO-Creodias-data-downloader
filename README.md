@@ -13,4 +13,10 @@ In order to run the utility properly, following Python libraries are required:
 - dateutil
 - csv
 
+## Downloaded data
 
+Data downloaded by the utility is stored inside project directory, in folder <i>data</id>.
+
+## Additional info
+
+At this moment there are no web requests handling or storage space check precautions implemented.
