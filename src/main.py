@@ -3,7 +3,7 @@ from src.queries_handler import build_get_request, build_post_request, get_json_
 from src.storage_handler import create_data_directory, store_json, download, load_tsv
 from src.utils import add_one_day, parse_date
 from src.hardcoded_resources import SEARCH_QUERY_URL, SEARCH_QUERY_DEFAULT_PARAMS, DEFAULT_COLLECTION, ACCESS_TOKEN_URL, ACCESS_TOKEN_REQUEST_DEFAULT_PARAMS
-
+from src.extract_geojson import iterate_over_dirs
 
 ##
 # Constructs dictionary containing variable params required by creodias finder search query
@@ -119,4 +119,5 @@ def main():
 
 
 if __name__ == "__main__":
+    # iterate_over_dirs()
     main()
