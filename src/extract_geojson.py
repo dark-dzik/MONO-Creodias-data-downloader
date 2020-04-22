@@ -24,7 +24,7 @@ def iterate_over_dirs():
                     if 'geometry' in json_data:
                         geojson = json_data['geometry']
                         file_extension_index = file.index('.json')
-                        geojson_file_name = file[:file_extension_index] + '_geo' + file[file_extension_index:]
+                        geojson_file_name = file[:file_extension_index] + '.geojson'
                         geojsons_dir = os.path.join(subdir, 'geojsons')
 
                         print('geometry extracted: %s\n' % geojson_file_name)
