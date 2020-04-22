@@ -1,6 +1,6 @@
 import datetime
 from src.queries_handler import build_get_request, build_post_request, get_json_string
-from src.storage_handler import store_json, download, load_tsv
+from src.storage_handler import create_data_directory, store_json, download, load_tsv
 from src.utils import add_one_day, parse_date
 from src.hardcoded_resources import SEARCH_QUERY_URL, SEARCH_QUERY_DEFAULT_PARAMS, DEFAULT_COLLECTION, ACCESS_TOKEN_URL, ACCESS_TOKEN_REQUEST_DEFAULT_PARAMS
 
@@ -50,7 +50,7 @@ def how_many_search_results(search_query_result_json):
 def select_search_results_to_download(search_query_result_json):
     features = list()
     for feature in search_query_result_json["features"]:
-        features.append((feature["id"], feature["properties"]["services"]["download"]["url"], feature))
+        features.append((feature["id"], feature["properties"]["services"]["download"]["url"], feature, feature["properties"]["completionDate"]))
     return features
 
 
@@ -75,8 +75,8 @@ def append_collection_to_search_request(search_request_url, collection):
 def manage_results_download(results_to_download_tuple_list, download_access_token, eruption_data):
     for result in results_to_download_tuple_list:
         data_download_request = build_get_request(result[1], {'token': download_access_token}, True)
-        store_json(eruption_data, result[0], result[2])
-        download(eruption_data, result[0], data_download_request)
+        store_json(eruption_data, result[3], result[2])
+        download(eruption_data, result[3], data_download_request)
 
 
 ##
@@ -97,12 +97,13 @@ def manage_results_download(results_to_download_tuple_list, download_access_toke
 # store its describing *.json
 # download and store its data package
 def main():
+    create_data_directory()
     eruptions_list = load_tsv()
     if len(eruptions_list) > 0:
         for eruption in eruptions_list:
             eruption_name = prepare_eruption_name(eruption)
             eruption_params = prepare_eruption_params(eruption)
-            print("Looking for %s data \n" % eruption_name)
+            print("\nLooking for %s data \n" % eruption_name)
             search_request_params = {**eruption_params, **SEARCH_QUERY_DEFAULT_PARAMS}
             search_query_url = append_collection_to_search_request(SEARCH_QUERY_URL, DEFAULT_COLLECTION)
             search_request = build_get_request(search_query_url, search_request_params)

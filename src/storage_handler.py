@@ -9,6 +9,14 @@ DATA_DIR = os.path.join(ROOT_DIR, "data")
 
 
 ##
+# Checks if folder for data download exists,
+# if not then creates one.
+def create_data_directory():
+    if not directory_exists(ROOT_DIR, "data"):
+        create_directory(ROOT_DIR, "data")
+
+
+##
 # Checks if folder/file exists inside given path.
 #
 # @param: parent_dir - directory which should contain file to be checked
@@ -46,13 +54,14 @@ def create_data_dir():
 # Also, prints download progress to stdout.
 #
 # @param: dir_name - string stating name of folder, inside which downloaded data will be stored
-# @param: download_id - string, serves as part of name, which will be given to downloaded file
+# @param: sat_scan_completion_date - string containing datetime of satellite scan,
+# serves as part of name, which will be given to downloaded file
 # @param: download_response - response of earlier executed web request, containing stream of data to download
-def download(dir_name, download_id, download_response):
+def download(dir_name, sat_scan_completion_date, download_response):
     if not directory_exists(DATA_DIR, dir_name):
         create_directory(DATA_DIR, dir_name)
 
-    file_name = dir_name + '_' + download_id + '.zip'
+    file_name = dir_name + '_' + sat_scan_completion_date + '.zip'
 
     with open(os.path.join(os.path.join(DATA_DIR, dir_name), file_name), 'wb') as data_file:
         print("\nDownloading %s" % file_name)
@@ -75,13 +84,13 @@ def download(dir_name, download_id, download_response):
 # Saves given json string in storage.
 #
 # @param: dir_name - string stating name of folder, inside which downloaded data will be stored
-# @param: download_id - string, serves as part of name, which will be given to downloaded file
+# @param: json_name - string, serves as part of name, which will be given to downloaded file
 # @json_string - string containing json to be stored
-def store_json(dir_name, download_id, json_string):
+def store_json(dir_name, json_name, json_string):
     if not directory_exists(DATA_DIR, dir_name):
         create_directory(DATA_DIR, dir_name)
 
-    file_name = dir_name + '_' + download_id + '.json'
+    file_name = dir_name + '_' + json_name + '.json'
 
     open(os.path.join(os.path.join(DATA_DIR, dir_name), file_name), 'w').write(json.dumps(json_string))
 
