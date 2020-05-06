@@ -1,9 +1,10 @@
 import datetime
 from src.queries_handler import build_get_request, build_post_request, get_json_string
 from src.storage_handler import create_data_directory, store_json, download, load_tsv
-from src.utils import add_one_day, parse_date
+from src.utils import add_seven_days, parse_date
 from src.hardcoded_resources import SEARCH_QUERY_URL, SEARCH_QUERY_DEFAULT_PARAMS, DEFAULT_COLLECTION, ACCESS_TOKEN_URL, ACCESS_TOKEN_REQUEST_DEFAULT_PARAMS
 from src.extract_geojson import iterate_over_dirs
+from src.chrs_handler import download_chrs
 
 ##
 # Constructs dictionary containing variable params required by creodias finder search query
@@ -13,7 +14,7 @@ from src.extract_geojson import iterate_over_dirs
 def prepare_eruption_params(eruption_tuple):
     eruption_params = {
         'startDate': parse_date(datetime.datetime(int(eruption_tuple[1]), int(eruption_tuple[2]), int(eruption_tuple[3]))).isoformat(),
-        'completionDate': add_one_day(parse_date(datetime.datetime(int(eruption_tuple[1]), int(eruption_tuple[2]), int(eruption_tuple[3])))).isoformat(),
+        'completionDate': add_seven_days(parse_date(datetime.datetime(int(eruption_tuple[1]), int(eruption_tuple[2]), int(eruption_tuple[3])))).isoformat(),
         'lat': eruption_tuple[4],
         'lon': eruption_tuple[5]
     }
@@ -118,6 +119,7 @@ def main():
                 manage_results_download(results_to_download_tuple_list, access_token, eruption_name)
 
 
-if __name__ == "__main__":
-    # iterate_over_dirs()
-    main()
+# if __name__ == "__main__":
+#     # iterate_over_dirs()
+#     download_chrs()
+#     # main()
